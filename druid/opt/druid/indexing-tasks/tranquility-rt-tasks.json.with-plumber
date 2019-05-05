@@ -1,0 +1,168 @@
+[
+  {
+    "dataSchema": {
+      "dataSource": "spark-ef-suricata",
+      "parser": {
+        "type": "string",
+        "parseSpec": {
+          "format": "json",
+          "timestampSpec": {
+            "format": "auto",
+            "column": "timestamp"
+          },
+          "dimensionsSpec": {
+            "spatialDimensions": [],
+            "dimensions": ["event_type","probe_id","probe_ip","in_iface","ipv4_src","port_src","ipv4_dst","port_dst","proto","alert_action","alert_signature_id","alert_rev","alert_signature","alert_category","alert_severity","service","http_hostname","http_method","http_protocol","http_status","http_length","geo_ip_src","geo_ip_dst","dns_type","dns_rrtype","dns_rrname","dns_id","dns_tx_id","dns_rcode","dns_rdata","smtp_helo","tls_version","ssh_client_version","ssh_server_version","http_tx_id"]
+          }
+        }
+      },
+      "metricsSpec": [{
+        "type": "count",
+        "name": "events"
+      }, {
+        "type": "longSum",
+        "fieldName": "vulnmnger_info_dst_value",
+        "name": "vulnmnger_info_dst_value_sum"
+      }, {
+        "type": "longMin",
+        "fieldName": "vulnmnger_info_dst_value",
+        "name": "vulnmnger_info_dst_value_min"
+      }, {
+        "type": "longMax",
+        "fieldName": "vulnmnger_info_dst_value",
+        "name": "vulnmnger_info_dst_value_max"
+      }, {
+        "type": "doubleSum",
+        "fieldName": "vulnmnger_info_risk",
+        "name": "vulnmnger_info_risk_sum"
+      },{
+        "type": "doubleMin",
+        "fieldName": "vulnmnger_info_risk",
+        "name": "vulnmnger_info_risk_min"
+      }, {
+        "type": "doubleMax",
+        "fieldName": "vulnmnger_info_risk",
+        "name": "vulnmnger_info_risk_max"
+      }, {
+        "type": "longSum",
+        "fieldName": "vulnmnger_info_ease",
+        "name": "vulnmnger_info_ease_sum"
+      }, {
+        "type": "longMin",
+        "fieldName": "vulnmnger_info_ease",
+        "name": "vulnmnger_info_ease_min"
+      }, {
+        "type": "longMax",
+        "fieldName": "vulnmnger_info_ease",
+        "name": "vulnmnger_info_ease_max"
+      }, {
+        "type": "longSum",
+        "fieldName": "vulnmnger_info_src_value",
+        "name": "vulnmnger_info_src_value_sum"
+      }, {
+        "type": "longMin",
+        "fieldName": "vulnmnger_info_src_value",
+        "name": "vulnmnger_info_src_value_min"
+      }, {
+        "type": "longMax",
+        "fieldName": "vulnmnger_info_src_value",
+        "name": "vulnmnger_info_src_value_max"
+      }, {
+        "type": "longSum",
+        "fieldName": "vulnmnger_info_reliability",
+        "name": "vulnmnger_info_reliability_sum"
+      }, {
+        "type": "longMin",
+        "fieldName": "vulnmnger_info_reliability",
+        "name": "vulnmnger_info_reliability_min"
+      }, {
+        "type": "longMax",
+        "fieldName": "vulnmnger_info_reliability",
+        "name": "vulnmnger_info_reliability_max"
+      }, {
+        "type": "longSum",
+        "fieldName": "vulnmnger_info_severity",
+        "name": "vulnmnger_info_severity_sum"
+      }, {
+        "type": "longMin",
+        "fieldName": "vulnmnger_info_severity",
+        "name": "vulnmnger_info_severity_min"
+      }, {
+        "type": "longMax",
+        "fieldName": "vulnmnger_info_severity",
+        "name": "vulnmnger_info_severity_max"
+      }, {
+        "type": "longSum",
+        "fieldName": "http_length",
+        "name": "http_length_sum"
+      }, {
+        "type": "longMin",
+        "fieldName": "http_length",
+        "name": "http_length_min"
+      }, {
+        "type": "longMax",
+        "fieldName": "http_length",
+        "name": "http_length_max"
+      }, {
+        "type": "longSum",
+        "fieldName": "fileinfo_size",
+        "name": "fileinfo_size_sum"
+      }, {
+        "type": "longMin",
+        "fieldName": "fileinfo_size",
+        "name": "fileinfo_size_min"
+      }, {
+        "type": "longMax",
+        "fieldName": "fileinfo_size",
+        "name": "fileinfo_size_max"
+      }, {
+        "type": "longSum",
+        "fieldName": "dns_ttl",
+        "name": "dns_ttl_sum"
+      }, {
+        "type": "longMin",
+        "fieldName": "dns_ttl",
+        "name": "dns_ttl_min"
+      }, {
+        "type": "longMax",
+        "fieldName": "dns_ttl",
+        "name": "dns_ttl_max"
+      }],
+      "granularitySpec": {
+        "segmentGranularity": "minute",
+        "type": "uniform",
+        "queryGranularity": "none"
+      }	
+    },
+    "ioConfig" : {
+      "type" : "realtime",
+      "firehose": {
+        "type": "kafka-0.8",
+        "consumerProps": {
+          "zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/druid",
+          "zookeeper.connection.timeout.ms" : "15000",
+          "zookeeper.session.timeout.ms" : "15000",
+          "zookeeper.sync.time.ms" : "5000",
+          "group.id": "tranquility-tasks",
+          "fetch.message.max.bytes" : "1048586",
+          "auto.offset.reset": "largest",
+          "auto.commit.enable": "false"
+        },
+        "feed": "spark-ef-suricata"
+      },
+      "plumber": {
+        "type": "realtime"
+      }
+    },
+    "tuningConfig": {
+      "maxRowsInMemory": "75000",
+      "type": "realtime",
+      "windowPeriod": "PT1M",
+      "rejectionPolicy" : {
+      "type" : "serverTime"
+      },
+      "intermediatePersistPeriod": "PT1M"
+      }
+    }
+  }
+]

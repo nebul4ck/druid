@@ -1,0 +1,143 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "ssagent-data",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "timestamp",
+          "format": "auto"
+        },
+        "dimensionsSpec": {
+          "dimensions": ["agent", "agent_ip", "company", "endpoint", "ip_dst", "ip_src", "ports_dst", "ports_src", "site", "ssagent_collector", "time", "timestamp", "tool"]
+        }
+      }
+    },
+    "metricsSpec": [
+            {
+              "type": "count",
+              "name": "event_count"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "bytes",
+              "name": "bytes_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "bytes",
+              "name": "bytes_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "bytes",
+              "name": "bytes_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "duration",
+              "name": "duration_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "duration",
+              "name": "duration_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "duration",
+              "name": "duration_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "flows",
+              "name": "flows_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "flows",
+              "name": "flows_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "flows",
+              "name": "flows_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "packets",
+              "name": "packets_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "packets",
+              "name": "packets_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "packets",
+              "name": "packets_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "tcp_connections",
+              "name": "tcp_connections_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "tcp_connections",
+              "name": "tcp_connections_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "tcp_connections",
+              "name": "tcp_connections_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "udp_connections",
+              "name": "udp_connections_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "udp_connections",
+              "name": "udp_connections_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "udp_connections",
+              "name": "udp_connections_max"
+            }
+    ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": "MINUTE"
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 5000000,
+    "maxRowsInMemory": 75000,
+    "intermediatePersistPeriod": "PT1M",
+    "resetOffsetAutomatically": true
+  },
+  "ioConfig": {
+    "topic": "ssagent-data",
+    "consumerProperties": {
+      "bootstrap.servers": "kafka01:9092",
+      "group.id": "druid-ssagent-data",
+      "client.id": "druid",
+      "auto.offset.reset": "latest",
+      "enable.auto.commit": true,
+      "auto.commit.interval.ms": 2500
+    },
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT10M",
+    "useEarliestOffset": false,
+    "completionTimeout": "PT5M"
+  }
+}

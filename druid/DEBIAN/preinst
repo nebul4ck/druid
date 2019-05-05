@@ -1,0 +1,41 @@
+#!/bin/bash -e
+#
+# This script is executed in the pre-installation phase
+#
+#   On Debian,
+#       $1=install : indicates an new install
+#       $1=upgrade : indicates an upgrade
+#
+
+SERVICE="druid"
+DRUID_USER="${SERVICE}"
+STORE_DIR="/opt/store/druid"
+PERSISTENT_DIR="${STORE_DIR}/persistent/task"
+
+case $1 in
+  # Debian
+  install|upgrade)
+
+    if ! getent passwd ${DRUID_USER} >/dev/null; then
+    	echo "Creating ${DRUID_USER} user..."
+    	useradd -d /home/${DRUID_USER} -s /bin/false ${DRUID_USER} && echo " ...OK"
+    else
+	     echo "User ${DRUID_USER} already exist."
+    fi
+
+    if [ ! -d ${PERSISTENT_DIR} ]
+    then
+      mkdir -p ${PERSISTENT_DIR}
+    fi
+
+    chown -R ${DRUID_USER}:${DRUID_USER} ${STORE_DIR}
+  ;;
+  abort-deconfigure|abort-upgrade|abort-remove)
+  ;;
+  *)
+      echo "post install script called with unknown argument \`$1'" >&2
+      exit 1
+  ;;
+esac
+
+exit 0

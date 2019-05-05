@@ -1,0 +1,123 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "netflow",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "timestamp",
+          "format": "auto"
+        },
+        "dimensionsSpec": {
+          "spatialDimensions": [
+				{
+				   "dimName": "geo_ip_dst",
+				   "dims": ["geo_ip_dst_lat","geo_ip_dst_lon"]
+				},
+				{
+				   "dimName": "geo_ip_src",
+				   "dims": ["geo_ip_src_lat","geo_ip_src_lon"]
+				}
+			],
+          "dimensions": ["company","site","probe","endpoint","app","tcpflags","ipv4_nh","mask_v4_dst","proto","ipv4_dst","user_dst","dsttos","mask_v4_src","direction","ipv4_src","user_src","deviceip","srcas","protonum","port_src","port_dst","srctos","dstas","probe_ip","fwdstatus","user"]
+        }
+      }
+    },
+    "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "duration",
+              "name": "duration_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "duration",
+              "name": "duration_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "duration",
+              "name": "duration_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "size",
+              "name": "size_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "size",
+              "name": "size_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "size",
+              "name": "size_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "inbytes",
+              "name": "inbytes_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "inbytes",
+              "name": "inbytes_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "inbytes",
+              "name": "inbytes_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "inpkts",
+              "name": "inpkts_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "inpkts",
+              "name": "inpkts_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "inpkts",
+              "name": "inpkts_max"
+            }
+    ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": "MINUTE"
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 5000000,
+    "maxRowsInMemory": 75000,
+    "intermediatePersistPeriod": "PT1M",
+    "resetOffsetAutomatically": true
+  },
+  "ioConfig": {
+    "topic": "netflow",
+    "consumerProperties": {
+      "bootstrap.servers": "kafka01:9092",
+      "group.id": "druid-netflow",
+      "client.id": "druid",
+      "auto.offset.reset": "latest",
+      "enable.auto.commit": true,
+      "auto.commit.interval.ms": 2500
+    },
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT10M",
+    "useEarliestOffset": false,
+    "completionTimeout": "PT5M"
+  }
+}

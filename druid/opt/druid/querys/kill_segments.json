@@ -1,0 +1,6 @@
+{
+    "type": "kill",
+    "id": "0115",
+    "dataSource": "spark-ef-snmp-ifaces",
+    "interval" : "2017-11-17T00:00:00.000Z/2017-11-17T09:00:00.000Z"
+}

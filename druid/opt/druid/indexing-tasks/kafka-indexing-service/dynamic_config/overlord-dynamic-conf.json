@@ -1,0 +1,17 @@
+{
+  "selectStrategy": {
+    "type": "fillCapacityWithAffinity",
+    "affinityConfig": {
+      "affinity": {
+        "suricata": ["druidmiddlemanager01:8091"],
+        "netflow": ["druidmiddlemanager02:8091"],
+	"icmp": ["druidmiddlemanager02:8091"],
+	"ssagent-data": ["druidmiddlemanager01:8091"],
+	"snmp-ifaces" : ["druidmiddlemanager02:8091"],
+	"quamtra-alerts" : ["druidmiddlemanager03:8091"],
+	"quamtra-data" : ["druidmiddlemanager03:8091"],
+	"ids-alerts" : ["druidmiddlemanager01:8091"]
+      }
+    }
+  }
+}

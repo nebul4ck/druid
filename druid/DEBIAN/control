@@ -1,0 +1,10 @@
+Package: druid-saturn
+Essential: no
+Priority: optional
+Section: main
+Maintainer: Wellness Labs <agonzalez@wtelecom.es>
+#Depends: hdfscleaner-saturn
+Architecture: amd64
+Version: 0.11.0
+Homepage: druid.io/
+Description: Druid is a high-performance, column-oriented, distributed data store.

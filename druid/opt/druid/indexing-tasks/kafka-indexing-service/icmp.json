@@ -1,0 +1,129 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "icmp",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "timestamp",
+          "format": "auto"
+        },
+        "dimensionsSpec": {
+          "spatialDimensions": [],
+          "dimensions": []
+        }
+      }
+    },
+    "metricsSpec": [
+            {
+              "type": "count",
+              "name": "event_count"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "response_percent",
+              "name": "response_percent_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "response_percent",
+              "name": "response_percent_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "response_percent",
+              "name": "response_percent_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "media_deviation",
+              "name": "media_deviation_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "media_deviation",
+              "name": "media_deviation_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "media_deviation",
+              "name": "media_deviation_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "minimum_rtt",
+              "name": "minimum_rtt_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "minimum_rtt",
+              "name": "minimum_rtt_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "minimum_rtt",
+              "name": "minimum_rtt_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "average_rtt",
+              "name": "average_rtt_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "average_rtt",
+              "name": "average_rtt_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "average_rtt",
+              "name": "average_rtt_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "maximum_rtt",
+              "name": "maximum_rtt_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "maximum_rtt",
+              "name": "maximum_rtt_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "maximum_rtt",
+              "name": "maximum_rtt_max"
+            }
+    ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": "MINUTE"
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 5000000,
+    "maxRowsInMemory": 75000,
+    "intermediatePersistPeriod": "PT1M",
+    "resetOffsetAutomatically": true
+  },
+  "ioConfig": {
+    "topic": "icmp",
+    "consumerProperties": {
+      "bootstrap.servers": "kafka01:9092",
+      "group.id": "druid-icmp",
+      "client.id": "druid",
+      "auto.offset.reset": "latest",
+      "enable.auto.commit": true,
+      "auto.commit.interval.ms": 2500
+    },
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT10M",
+    "useEarliestOffset": false,
+    "completionTimeout": "PT5M"
+  }
+}

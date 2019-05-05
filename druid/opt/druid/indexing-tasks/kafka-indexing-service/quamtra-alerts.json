@@ -1,0 +1,147 @@
+{
+    "type": "kafka",
+    "dataSchema": {
+      "dataSource": "quamtra-alerts",
+      "parser": {
+        "type": "string",
+        "parseSpec": {
+          "format": "json",
+          "timestampSpec": {
+            "column": "timestamp",
+            "format": "auto"
+          },
+          "dimensionsSpec": {
+            "dimensions": ["type", "mcc", "lac", "company", "site", "timestamp_publish", "mnc", "imei", "cid"],
+            "spatialDimensions": [{
+                "dimName": "location",
+                "dims": ["latitude", "longitude"]
+            }]
+          }
+        }
+      },
+      "metricsSpec": [
+              {
+                "type": "count",
+                "name": "event_count"
+              },
+              {
+                "type": "longSum",
+                "fieldName": "free_distance",
+                "name": "free_distance_sum"
+              },
+              {
+                "type": "longMin",
+                "fieldName": "free_distance",
+                "name": "free_distance_min"
+              },
+              {
+                "type": "longMax",
+                "fieldName": "free_distance",
+                "name": "free_distance_max"
+              },
+              {
+                "type": "longSum",
+                "fieldName": "gsm",
+                "name": "gsm_sum"
+              },
+              {
+                "type": "longMin",
+                "fieldName": "gsm",
+                "name": "gsm_min"
+              },
+              {
+                "type": "longMax",
+                "fieldName": "gsm",
+                "name": "gsm_max"
+              },
+              {
+                "type": "longSum",
+                "fieldName": "battery",
+                "name": "battery_sum"
+              },
+              {
+                "type": "longMin",
+                "fieldName": "battery",
+                "name": "battery_min"
+              },
+              {
+                "type": "longMax",
+                "fieldName": "battery",
+                "name": "battery_max"
+              },
+              {
+                "type": "longSum",
+                "fieldName": "temperature",
+                "name": "temperature_sum"
+              },
+              {
+                "type": "longMin",
+                "fieldName": "temperature",
+                "name": "temperature_min"
+              },
+              {
+                "type": "longMax",
+                "fieldName": "temperature",
+                "name": "temperature_max"
+              },
+              {
+                "type": "longMin",
+                "fieldName": "acc_x",
+                "name": "acc_x_min"
+              },
+              {
+                "type": "longMax",
+                "fieldName": "acc_x",
+                "name": "acc_x_max"
+              },
+              {
+                "type": "longMin",
+                "fieldName": "acc_y",
+                "name": "acc_y_min"
+              },
+              {
+                "type": "longMax",
+                "fieldName": "acc_y",
+                "name": "acc_y_max"
+              },
+              {
+                "type": "longMin",
+                "fieldName": "acc_z",
+                "name": "acc_z_min"
+              },
+              {
+                "type": "longMax",
+                "fieldName": "acc_z",
+                "name": "acc_z_max"
+              }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "DAY",
+        "queryGranularity": "MINUTE"
+      }
+    },
+    "tuningConfig": {
+      "type": "kafka",
+      "maxRowsPerSegment": 5000000,
+      "maxRowsInMemory": 75000,
+      "intermediatePersistPeriod": "PT1M",
+      "resetOffsetAutomatically": true
+    },
+    "ioConfig": {
+      "topic": "quamtra-alerts",
+      "consumerProperties": {
+        "bootstrap.servers": "kafka01:9092",
+        "group.id": "druid-quamtra-alerts",
+        "client.id": "druid",
+        "auto.offset.reset": "latest",
+        "enable.auto.commit": true,
+        "auto.commit.interval.ms": 2500
+      },
+      "taskCount": 1,
+      "replicas": 1,
+      "taskDuration": "PT10M",
+      "useEarliestOffset": false,
+      "completionTimeout": "PT5M"
+    }
+}

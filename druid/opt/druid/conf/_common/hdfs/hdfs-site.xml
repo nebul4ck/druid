@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<!-- NAMENODE -->
+
+	<property>
+		<name>dfs.namenode.name.dir</name>
+                <value>file:///opt/store/hadoop/namenode</value>	
+                <description>Path del filesystem donde el namenode almacenará los metadatos.</description>
+        </property>
+
+	<property>
+		<name>dfs.nameservices</name>
+		<value>hdfs01</value>
+		<description> Comma-separated list of nameservices.</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.name.dir.restore</name>
+		<value>true</value>
+		<description>Set to true to enable NameNode to attempt recovering a previously failed dfs.namenode.name.dir. When enabled, a recovery of any failed directory is attempted during checkpoint.</description>
+	</property>
+
+	<property>
+		<name>dfs.blocksize</name>
+		<value>268435456</value>
+		<description>HDFS blocksize of 256MB for large file-systems.</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.handler.count</name>
+		<value>100</value>
+		<description>More NameNode server threads to handle RPCs from large number of DataNodes.</description>
+	</property>
+ 
+        <property>
+                <name>dfs.namenode.http-address</name>
+                <value>hdfsnamenode01:50070</value>
+        </property>
+
+        <property>
+                <name>dfs.replication</name>
+                <value>1</value>
+                <description>Valor por defecto para replicar bloques HDFS</description>
+        </property>
+
+	<property>
+		<name>dfs.image.compress</name>
+		<value>false</value>
+		<description>Should the dfs image be compressed?</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.support.allow.format</name>
+		<value>true</value>
+		<description>Does HDFS namenode allow itself to be formatted? You may consider setting this to false for any production cluster, to avoid any possibility of formatting a running DFS.</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.startup.delay.block.deletion.sec</name>
+		<value>3600</value>
+		<description>The delay in seconds at which we will pause the blocks deletion after Namenode startup. By default it's disabled. In the case a directory has large number of directories and files are deleted, suggested delay is one hour to give the administrator enough time to notice large number of pending deletion blocks and take corrective action.</description>
+	</property>
+
+	<property>
+		<name>dfs.datanode.du.reserved</name>
+		<value>5368709120</value>
+		<description>(5GB) - Reserved space in bytes per volume. Always leave this much space free for non dfs use.</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.datanode.registration.ip-hostname-check</name>
+		<value>false</value>
+	</property>
+
+<!-- SECONDARYNAMENODE -->
+
+	<property>
+		<name>dfs.namenode.checkpoint.dir</name>
+		<value>file:///opt/store/hadoop/namesecondary</value>
+		<description>Determines where on the local filesystem the DFS secondary name node should store the temporary images to merge. If this is a comma-delimited list of directories then the image is replicated in all of the directories for redundancy. Es recomendable añadir otro path (file:///undir,file:///otrodir) siempre y cuando estén en discos diferentes.</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.checkpoint.period</name>
+		<value>3600</value>
+		<description>The number of seconds between two periodic checkpoints.</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.checkpoint.txns</name>
+		<value>1000000</value>
+		<description>The Secondary NameNode or CheckpointNode will create a checkpoint of the namespace every 'dfs.namenode.checkpoint.txns' transactions, regardless of whether 'dfs.namenode.checkpoint.period' has expired.</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.checkpoint.max-retries</name>
+		<value>6</value>
+		<description>The SecondaryNameNode retries failed checkpointing. If the failure occurs while loading fsimage or replaying edits, the number of retries is limited by this variable.</description>
+	</property>
+
+	<property>
+		<name>dfs.namenode.num.checkpoints.retained</name>
+		<value>3</value>
+		<description>The number of image checkpoint files (fsimage_*) that will be retained by the NameNode and Secondary NameNode in their storage directories. All edit logs (stored on edits_* files) necessary to recover an up-to-date namespace from the oldest retained checkpoint will also be retained.</description>
+	</property>
+
+        <property>
+                <name>dfs.namenode.secondary.http-address</name>
+                <value>hdfsnamenode01:50090</value>
+        </property>
+ 
+        <property>
+                <name>dfs.namenode.secondary.https-address</name>
+                <value>hdfsnamenode01:50091</value>
+        </property>
+
+<!-- DATANODE -->
+ 
+        <property>
+                <name>dfs.datanode.data.dir</name>
+                <value>file:///opt/store/hadoop/datanode</value>
+		<description>If this is a comma-delimited list of directories, then data will be stored in all named directories, typically on different devices</description>
+        </property>
+ 
+        <property>
+                <name>dfs.datanode.address</name>
+                <value>hdfsnamenode01:50010</value>
+        </property>
+
+        <property>
+                <name>dfs.datanode.http.address</name>
+                <value>hdfsnamenode01:50075</value>
+        </property>
+
+        <property>
+                <name>dfs.datanode.ipc.address</name>
+                <value>hdfsnamenode01:50020</value>
+        </property>
+
+	<property>
+		<name>dfs.datanode.handler.count</name>
+		<value>10</value>
+		<description>The number of server threads for the datanode.</description>
+	</property>
+
+	<property>
+		<name>dfs.client.block.write.replace-datanode-on-failure.enable</name>
+		<value>false</value>
+		<description>If there is a datanode/network failure in the write pipeline, DFSClient will try to remove the failed datanode from the pipeline and then continue writing with the remaining datanodes. As a result, the number of datanodes in the pipeline is decreased. The feature is to add new datanodes to the pipeline. This is a site-wide property to enable/disable the feature. When the cluster size is extremely small, e.g. 3 nodes or less, cluster administrators may want to set the policy to NEVER in the default configuration file or disable this feature. Otherwise, users may experience an unusually high rate of pipeline failures since it is impossible to find new datanodes for replacement. See also dfs.client.block.write.replace-datanode-on-failure.policy</description>
+	</property>
+
+	<property>
+		<name>dfs.client.block.write.replace-datanode-on-failure.policy</name>
+		<value>NEVER</value>
+		<description>This property is used only if the value of dfs.client.block.write.replace-datanode-on-failure.enable is true. ALWAYS: always add a new datanode when an existing datanode is removed. NEVER: never add a new datanode. DEFAULT: Let r be the replication number. Let n be the number of existing datanodes. Add a new datanode only if r is greater than or equal to 3 and either (1) floor(r/2) is greater than or equal to n; or (2) r is greater than n and the block is hflushed/appended. </description>
+	</property>
+
+	<property>
+		<name>dfs.datanode.max.locked.memory</name>
+		<value>512</value>
+		<description>The amount of memory in bytes to use for caching of block replicas in memory on the datanode. The datanode's maximum locked memory soft ulimit (RLIMIT_MEMLOCK) must be set to at least this value, else the datanode will abort on startup. By default, this parameter is set to 0, which disables in-memory caching. If the native libraries are not available to the DataNode, this configuration has no effect.</description>
+	</property>
+
+<!-- Tunning For ElasticSearch HDFS Repository -->
+
+	<property>
+		<name>dfs.client.read.shortcircuit</name>
+		<value>false</value>
+	</property>
+
+	<property>
+		<name>dfs.domain.socket.path</name>
+		<value>/opt/hadoop/run/datanode_socket</value>
+	</property>
+
+
+<!-- Mas opciones de configuración en: https://hadoop.apache.org/docs/r2.7.1/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml -->
+
+</configuration>

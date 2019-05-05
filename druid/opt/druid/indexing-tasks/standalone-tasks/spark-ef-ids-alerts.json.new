@@ -1,0 +1,106 @@
+{
+  "dataSources": [
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+              "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensions": []
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-ids-alerts",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "events",
+              "name": "alert_events_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "events",
+              "name": "alert_events_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "events",
+              "name": "alert_events_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "reliability",
+              "name": "reliability_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "reliability",
+              "name": "reliability_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "reliability",
+              "name": "reliability_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "risk",
+              "name": "risk_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "risk",
+              "name": "risk_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "risk",
+              "name": "risk_max"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "50000",
+          "type": "realtime",
+          "windowPeriod": "PT5M",
+          "intermediatePersistPeriod": "PT5M"
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-ids-alerts"
+      }
+    }
+  ],
+  "properties": {
+    "zookeeper.connect":"smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/druid",
+    "zookeeper.timeout": "PT20S",
+    "druid.selectors.indexing.serviceName": "overlord",
+    "druid.discovery.curator.path": "/discovery",
+    "kafka.zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/kafka",
+    "kafka.group.id": "sparkIdsAlerts",
+    "kafka.auto.commit.enable":"false",
+    "consumer.numThreads": "1",
+    "commit.periodMillis": "15000",
+    "reportDropsAsExceptions": "false"
+  }
+}
+

@@ -1,0 +1,119 @@
+{
+  "dataSources": [
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+              "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensionss": ["app","tcpflags","ipv4_nh","mask_v4_dst","proto","ipv4_dst","dsttos","mask_v4_src","direction","ipv4_src","deviceip","srcas","protonum","port_src","port_dst","srctos","dstas","probe_ip","fwdstatus","endpoint", "geo_ip_src", "geo_ip_dst"]
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-netflow",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "duration",
+              "name": "duration_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "duration",
+              "name": "duration_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "duration",
+              "name": "duration_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "size",
+              "name": "size_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "size",
+              "name": "size_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "size",
+              "name": "size_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "inbytes",
+              "name": "inbytes_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "inbytes",
+              "name": "inbytes_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "inbytes",
+              "name": "inbytes_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "inpkts",
+              "name": "inpkts_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "inpkts",
+              "name": "inpkts_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "inpkts",
+              "name": "inpkts_max"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "75000",
+          "type": "realtime",
+          "windowPeriod": "PT10M",
+          "intermediatePersistPeriod": "PT10M",
+          "rejectionPolicy": {
+          "type": "none"
+          }
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-netflow"
+      }
+    }
+  ],
+  "properties": {
+    "zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/druid",
+    "zookeeper.timeout": "PT20S",
+    "druid.selectors.indexing.serviceName": "overlord",
+    "druid.discovery.curator.path": "/discovery",
+    "kafka.zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/kafka",
+    "kafka.group.id": "sparkNetflow"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "ids-alerts",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "timestamp",
+          "format": "auto"
+        },
+        "dimensionsSpec": {
+          "spatialDimensions": [],
+          "dimensions": ["company","rule_id","group_id"]
+        }
+      }
+    },
+    "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "reliability",
+              "name": "reliability_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "reliability",
+              "name": "reliability_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "reliability",
+              "name": "reliability_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "risk",
+              "name": "risk_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "risk",
+              "name": "risk_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "risk",
+              "name": "risk_sum"
+            }
+    ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": "MINUTE"
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 5000000,
+    "maxRowsInMemory": 75000,
+    "intermediatePersistPeriod": "PT1M",
+    "resetOffsetAutomatically": true
+  },
+  "ioConfig": {
+    "topic": "ids-alerts",
+    "consumerProperties": {
+      "bootstrap.servers": "kafka01:9092",
+      "group.id": "druid-ids",
+      "client.id": "druid",
+      "auto.offset.reset": "latest",
+      "enable.auto.commit": true,
+      "auto.commit.interval.ms": 2500
+    },
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT10M",
+    "useEarliestOffset": false,
+    "completionTimeout": "PT5M"
+  }
+}

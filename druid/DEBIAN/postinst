@@ -1,0 +1,118 @@
+#!/bin/bash -e
+#
+# This script is executed in the post-installation phase
+#
+#   On Debian,
+#       $1=configure : is set to 'configure' and if $2 is set, it is an upgrade
+#
+
+COORDINATOR="coordinator.service"
+OVERLORD="overlord.service"
+MIDDLEMANAGER="middlemanager.service"
+HISTORICAL="historical.service"
+BROKER="broker.service"
+DRUID_HOME="/opt/druid"
+DRUID_LOG="/var/log/druid"
+DRUID_USER="druid"
+DRUID_TMP="$DRUID_HOME/tmp"
+DRUID_SERVICES=(broker coordinator historical middlemanager overlord)
+
+IS_UPGRADE=false
+
+case "$1" in
+
+    # Debian ####################################################
+    configure)
+        # If $1=configure and $2 is set, this is an upgrade
+        if [ ! -z $2 ]; then
+            IS_UPGRADE=true
+	    RESTART_ON_UPGRADE=true
+        fi
+    ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+    *)
+        echo "post install script called with unknown argument \`$1'" >&2
+	exit 1
+    ;;
+esac
+
+if [ ${IS_UPGRADE} != "true" ]; then
+    if command -v systemctl >/dev/null; then
+        if systemctl is-enabled ${COORDINATOR} >/dev/null; then
+            systemctl disable ${COORDINATOR}
+        fi
+
+        if systemctl is-enabled ${BROKER} >/dev/null; then
+            systemctl disable ${BROKER}
+        fi
+
+        if systemctl is-enabled ${HISTORICAL} >/dev/null; then
+            systemctl disable ${HISTORICAL}
+        fi
+
+        if systemctl is-enabled ${OVERLORD} >/dev/null; then
+            systemctl disable ${OVERLORD}
+        fi
+
+        if systemctl is-enabled ${MIDDLEMANAGER} >/dev/null; then
+            systemctl disable ${MIDDLEMANAGER}
+        fi
+
+        systemctl daemon-reload
+    
+        echo -e "\n### You can start Druid services by executing"
+        echo -e " sudo systemctl start <service>.service\n"
+    fi
+elif [ ${RESTART_ON_UPGRADE} = "true" ]; then
+    echo -n "Restarting Druid services..."
+    if command -v systemctl >/dev/null; then
+        systemctl daemon-reload
+
+        if systemctl is-active ${COORDINATOR} >/dev/null; then
+            systemctl restart ${COORDINATOR}
+        fi
+
+        if systemctl is-active ${BROKER} >/dev/null; then
+            systemctl restart ${BROKER}
+        fi
+
+        if systemctl is-active ${HISTORICAL} >/dev/null; then
+            systemctl restart ${HISTORICAL}
+        fi
+
+        if systemctl is-active ${OVERLORD} >/dev/null; then
+            systemctl restart ${OVERLORD}
+        fi
+
+        if systemctl is-active ${MIDDLEMANAGER} >/dev/null; then
+            systemctl restart ${MIDDLEMANAGER}
+        fi
+
+        echo " ...OK"
+   fi
+fi
+
+echo "Set Middlemanager crontabs..."
+echo -e "Note: remember uncomment Middlemanager crontab if you will run middlemanager service in this host\n"
+
+if [ ! -d $DRUID_LOG ];then
+	mkdir $DRUID_LOG
+fi
+
+for service in ${DRUID_SERVICES[@]};
+do
+	mkdir -p $DRUID_TMP/$service
+done
+
+echo "Setting User and Group..."
+chown -R ${DRUID_USER}:${DRUID_USER} ${DRUID_HOME} && chown -R ${DRUID_USER}:${DRUID_USER} ${DRUID_LOG} && echo " ...OK"
+
+echo "Setting directory attributes..."
+chmod -R 775 ${DRUID_HOME} && echo " ...OK"
+
+echo "/usr/bin/druid_hard_reload Script need be configured!!"
+
+systemctl daemon-reload
+
+exit 0

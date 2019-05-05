@@ -1,0 +1,281 @@
+{
+  "dataSources": [
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+              "dimensionsSpec": {
+                "dimensions": ["probe_id","probe_ip","ipv4","op_status","admin_status","alias","speed","port","mac","name"]
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-snmp-ifaces",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "system_up",
+              "name": "system_up_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "system_up",
+              "name": "system_up_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "system_up",
+              "name": "system_up_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_octets",
+              "name": "input_octets_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_octets",
+              "name": "input_octets_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_octets",
+              "name": "input_octets_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_octets",
+              "name": "output_octets_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_octets",
+              "name": "output_octets_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_octets",
+              "name": "output_octets_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_discards",
+              "name": "input_packets_discards_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_discards",
+              "name": "input_packets_discards_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_discards",
+              "name": "input_packets_discards_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_discards",
+              "name": "output_packets_discards_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_discards",
+              "name": "output_packets_discards_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_discards",
+              "name": "output_packets_discards_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_multicast",
+              "name": "input_packets_multicast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_multicast",
+              "name": "input_packets_multicast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_multicast",
+              "name": "input_packets_multicast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_multicast",
+              "name": "output_packets_multicast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_multicast",
+              "name": "output_packets_multicast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_multicast",
+              "name": "output_packets_multicast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_ucast",
+              "name": "input_packets_ucast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_ucast",
+              "name": "input_packets_ucast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_ucast",
+              "name": "input_packets_ucast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_ucast",
+              "name": "output_packets_ucast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_ucast",
+              "name": "output_packets_ucast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_ucast",
+              "name": "output_packets_ucast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_broadcast",
+              "name": "input_packets_broadcast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_broadcast",
+              "name": "input_packets_broadcast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_broadcast",
+              "name": "input_packets_broadcast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_broadcast",
+              "name": "output_packets_broadcast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_broadcast",
+              "name": "output_packets_broadcast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_broadcast",
+              "name": "output_packets_broadcast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_errors",
+              "name": "input_packets_errors_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_errors",
+              "name": "input_packets_errors_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_errors",
+              "name": "input_packets_errors_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_errors",
+              "name": "output_packets_errors_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_errors",
+              "name": "output_packets_errors_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_errors",
+              "name": "output_packets_errors_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "max_packet_size",
+              "name": "max_packet_size_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "max_packet_size",
+              "name": "max_packet_size_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "max_packet_size",
+              "name": "max_packet_size_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "in_bandwidth",
+              "name": "in_bandwidth_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "in_bandwidth",
+              "name": "in_bandwidth_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "in_bandwidth",
+              "name": "in_bandwidth_max"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "50000",
+          "type": "realtime",
+          "windowPeriod": "PT5M",
+          "intermediatePersistPeriod": "PT5M"
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-snmp-ifaces"
+      }
+    }
+  ],
+  "properties": {
+    "zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/druid",
+    "zookeeper.timeout": "PT20S",
+    "druid.selectors.indexing.serviceName": "overlord",
+    "druid.discovery.curator.path": "/discovery",
+    "kafka.zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/kafka",
+    "kafka.group.id": "sparkSnmpIfaces"
+  }
+}
+

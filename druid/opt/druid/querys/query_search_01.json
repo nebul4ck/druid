@@ -1,0 +1,23 @@
+{
+  "queryType": "topN",
+  "dataSource": "spark-ef-netflow",
+  "dimension": "",
+  "threshold": 25,
+  "metric": "inbytes_sum",
+  "granularity": "all",
+  "filter": {
+        "type": "selector",
+        "dimension": "direction",
+        "value": "0"
+  },
+  "aggregations": [
+    {
+      "type": "doubleSum",
+      "name": "inbytes_sum",
+      "fieldName": "inbytes_sum"
+    }
+  ],
+  "intervals": [
+    "2017-10-01T00:00:00.000/2017-11-01T11:00:00.000"
+  ]
+}

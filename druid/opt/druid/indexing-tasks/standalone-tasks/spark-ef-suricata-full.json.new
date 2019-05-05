@@ -1,0 +1,480 @@
+{
+  "dataSources": [
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+                "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensions": ["probe_id","probe_ip","in_iface","ipv4_src","port_src","ipv4_dst","port_dst","proto","alert_action","alert_signature_id","alert_rev","alert_signature","alert_category","alert_severity","service","http_hostname","http_method","http_protocol","http_status","http_length", "geo_ip_src", "geo_ip_dst"]
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-suricata",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "vulnmnger_info_dst_value",
+              "name": "vulnmnger_info_dst_value_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "vulnmnger_info_dst_value",
+              "name": "vulnmnger_info_dst_value_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "vulnmnger_info_dst_value",
+              "name": "vulnmnger_info_dst_value_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "vulnmnger_info_risk",
+              "name": "vulnmnger_info_risk_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "vulnmnger_info_risk",
+              "name": "vulnmnger_info_risk_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "vulnmnger_info_risk",
+              "name": "vulnmnger_info_risk_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "vulnmnger_info_ease",
+              "name": "vulnmnger_info_ease_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "vulnmnger_info_ease",
+              "name": "vulnmnger_info_ease_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "vulnmnger_info_ease",
+              "name": "vulnmnger_info_ease_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "vulnmnger_info_src_value",
+              "name": "vulnmnger_info_src_value_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "vulnmnger_info_src_value",
+              "name": "vulnmnger_info_src_value_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "vulnmnger_info_src_value",
+              "name": "vulnmnger_info_src_value_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "vulnmnger_info_reliability",
+              "name": "vulnmnger_info_reliability_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "vulnmnger_info_reliability",
+              "name": "vulnmnger_info_reliability_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "vulnmnger_info_reliability",
+              "name": "vulnmnger_info_reliability_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "vulnmnger_info_severity",
+              "name": "vulnmnger_info_severity_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "vulnmnger_info_severity",
+              "name": "vulnmnger_info_severity_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "vulnmnger_info_severity",
+              "name": "vulnmnger_info_severity_max"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "10000",
+          "type": "realtime",
+          "windowPeriod": "PT2M",
+          "intermediatePersistPeriod": "PT2M",
+          "rejectionPolicy": {
+          "type": "serverTime"
+          }
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-suricata"
+      }
+    },
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+                "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensions": []
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-suricata-dns",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "10000",
+          "type": "realtime",
+          "windowPeriod": "PT4M",
+          "intermediatePersistPeriod": "PT4M",
+          "rejectionPolicy": {
+          "type": "serverTime"
+          }
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-suricata-dns"
+      }
+    },
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+                "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensions": ["http_hostname","port_dst","ipv4_src","http_method","protocol","probe_ip","fileinfo_magic","proto","flow_id","fileinfo_state","http_content_type","status","http_url","ipv4_dst","endpoint","tx_id","port_src", "geo_ip_src", "geo_ip_dst"]
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-suricata-fileinfo",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "length",
+              "name": "length_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "length",
+              "name": "length_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "length",
+              "name": "length_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "fileinfo_size",
+              "name": "fileinfo_size_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "fileinfo_size",
+              "name": "fileinfo_size_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "fileinfo_size",
+              "name": "fileinfo_size_max"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "10000",
+          "type": "realtime",
+          "windowPeriod": "PT6M",
+          "intermediatePersistPeriod": "PT6M",
+          "rejectionPolicy": {
+          "type": "serverTime"
+          }
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-suricata-fileinfo"
+      }
+    },
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+                "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensions": ["probe_id","probe_ip","flow_id","ipv4_src","port_src","ipv4_dst","port_dst","proto","tx_id","http_hostname","http_user_agent","http_method","http_protocol", "geo_ip_src", "geo_ip_dst"]
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-suricata-http",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "http_length",
+              "name": "http_length_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "http_length",
+              "name": "http_length_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "http_length",
+              "name": "http_length_max"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "10000",
+          "type": "realtime",
+          "windowPeriod": "PT2M",
+          "intermediatePersistPeriod": "PT2M",
+          "rejectionPolicy": {
+          "type": "serverTime"
+          }
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-suricata-http"
+      }
+    },
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+                "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensions": []
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-suricata-ssh",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "10000",
+          "type": "realtime",
+          "windowPeriod": "PT8M",
+          "intermediatePersistPeriod": "PT8M",
+          "rejectionPolicy": {
+          "type": "serverTime"
+          }
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-suricata-ssh"
+      }
+    },
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+                "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensions": []
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-suricata-tls",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "10000",
+          "type": "realtime",
+          "windowPeriod": "PT5M",
+          "intermediatePersistPeriod": "PT5M",
+          "rejectionPolicy": {
+          "type": "serverTime"
+          }
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-suricata-tls"
+      }
+    },
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+                "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensions": []
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-suricata-smtp",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "10000",
+          "type": "realtime",
+          "windowPeriod": "PT10M",
+          "intermediatePersistPeriod": "PT10M",
+          "rejectionPolicy": {
+          "type": "serverTime"
+          }
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-suricata-smtp"
+      }
+    }
+  ],
+  "properties": {
+    "zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/druid",
+    "zookeeper.timeout": "PT20S",
+    "druid.selectors.indexing.serviceName": "overlord",
+    "druid.discovery.curator.path": "/discovery",
+    "kafka.zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/kafka",
+    "kafka.group.id": "sparkSuricata",
+    "kafka.auto.commit.enable":"false",
+    "consumer.numThreads": "5",
+    "commit.periodMillis": "15000",
+    "reportDropsAsExceptions": "false"
+  }
+}

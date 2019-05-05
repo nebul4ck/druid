@@ -1,0 +1,10 @@
+/var/log/druid/*.log {
+        weekly
+        size 100M
+        missingok
+        rotate 3
+        copytruncate
+        delaycompress
+        compress
+        notifempty
+}

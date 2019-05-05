@@ -1,0 +1,134 @@
+{
+  "dataSources": [
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+              "dimensionsSpec": {
+                "dimensions": ["endpoint", "probe_ip", "ipv4", "response_percent"]
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-icmp",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "event_count"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "response_percent_sum",
+              "name": "response_percent_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "response_percent_min",
+              "name": "response_percent_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "response_percent_max",
+              "name": "response_percent_max"
+            },
+            { 
+              "type": "longSum",
+              "fieldName": "media_deviation_sum",
+              "name": "media_deviation_sum"
+            },
+            { 
+              "type": "longMin",
+              "fieldName": "media_deviation_min",
+              "name": "media_deviation_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "media_deviation_max",
+              "name": "media_deviation_max"
+            },
+            { 
+              "type": "longSum",
+              "fieldName": "minimum_rtt_sum",
+              "name": "minimum_rtt_sum"
+            },
+            { 
+              "type": "longMin",
+              "fieldName": "minimum_rtt_min",
+              "name": "minimum_rtt_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "minimum_rtt_max",
+              "name": "minimum_rtt_max"
+            },
+            { 
+              "type": "longSum",
+              "fieldName": "average_rtt_sum",
+              "name": "average_rtt_sum"
+            },
+            { 
+              "type": "longMin",
+              "fieldName": "average_rtt_min",
+              "name": "average_rtt_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "average_rtt_max",
+              "name": "average_rtt_max"
+            },
+            { 
+              "type": "longSum",
+              "fieldName": "maximum_rtt_sum",
+              "name": "maximum_rtt_sum"
+            },
+            { 
+              "type": "longMin",
+              "fieldName": "maximum_rtt_min",
+              "name": "maximum_rtt_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "maximum_rtt_max",
+              "name": "maximum_rtt_max"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "5000",
+          "type": "realtime",
+          "windowPeriod": "PT10M",
+          "intermediatePersistPeriod": "PT10M"
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-icmp"
+      }
+    }
+  ],
+  "properties": {
+    "zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/druid",
+    "zookeeper.timeout": "PT20S",
+    "druid.selectors.indexing.serviceName": "overlord",
+    "druid.discovery.curator.path": "/discovery",
+    "kafka.zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/kafka",
+    "kafka.group.id": "sparkIcmp",
+    "kafka.auto.commit.enable":"false",
+    "consumer.numThreads": "7",
+    "commit.periodMillis": "15000",
+    "reportDropsAsExceptions": "false"
+  }
+}

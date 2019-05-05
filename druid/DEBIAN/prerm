@@ -1,0 +1,92 @@
+#!/bin/bash
+#
+# This script is executed in the pre-remove phase
+#
+#   On Debian,
+#       $1=remove    : indicates a removal
+#       $1=upgrade   : indicates an upgrade
+#
+
+COORDINATOR="coordinator.service"
+OVERLORD="overlord.service"
+MIDDLEMANAGER="middlemanager.service"
+BROKER="broker.service"
+HISTORICAL="historical.service"
+SERVICE="druid"
+DRUID_USER="${SERVICE}"
+
+STOP_REQUIRED=false
+REMOVE_SERVICE=false
+
+case "$1" in
+
+    # Debian ####################################################
+    remove|purge)
+        STOP_REQUIRED=true
+        REMOVE_SERVICE=true
+    ;;
+    upgrade)
+        if [ ${RESTART_ON_UPGRADE} = "true" ]; then
+            STOP_REQUIRED=true
+        fi
+    ;;
+    deconfigure|failed-upgrade)
+    ;;
+    *)
+        echo "pre remove script called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+# Stops the service
+if [ ${STOP_REQUIRED} = "true" ]; then
+    echo "Stopping Druid services..."
+    if command -v systemctl >/dev/null; then
+	if systemctl is-active ${COORDINATOR} >/dev/null; then
+        	systemctl --no-reload stop ${COORDINATOR}
+	fi
+
+    	if systemctl is-active ${BROKER} >/dev/null; then
+        	systemctl --no-reload stop ${BROKER}
+	fi
+
+    	if systemctl is-active ${HISTORICAL} >/dev/null; then
+        	systemctl --no-reload stop ${HISTORICAL}
+ 	fi
+
+    	if systemctl is-active ${OVERLORD} >/dev/null; then
+        	systemctl --no-reload stop ${OVERLORD}
+    	fi
+	
+    	if systemctl is-active ${MIDDLEMANAGER} >/dev/null; then
+        	systemctl --no-reload stop ${MIDDLEMANAGER}
+    	fi
+    fi
+    echo "... OK"
+fi
+
+if [ ${REMOVE_SERVICE} = "true" ]; then
+    if command -v systemctl >/dev/null; then
+	if systemctl is-active ${COORDINATOR} >/dev/null; then
+	    systemctl disable ${COORDINATOR} > /dev/null 2>&1
+        fi
+
+    	if systemctl is-active ${BROKER} >/dev/null; then
+       	    systemctl disable ${BROKER} > /dev/null 2>&1
+    	fi
+
+    	if systemctl is-active ${HISTORICAL} >/dev/null; then
+            systemctl disable ${HISTORICAL} > /dev/null 2>&1
+        fi
+
+        if systemctl is-active ${OVERLORD} >/dev/null; then
+            systemctl disable ${OVERLORD} > /dev/null 2>&1
+   	fi
+
+    	if systemctl is-active ${MIDDLEMANAGER} >/dev/null; then
+            systemctl disable ${MIDDLEMANAGER} > /dev/null 2>&1
+    	fi
+    fi
+fi
+
+exit 0

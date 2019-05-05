@@ -1,0 +1,36 @@
+[Unit]
+Description=Overlord Service
+Documentation=http://druid.io
+
+[Service]
+Type=simple
+
+User=druid
+Group=druid
+Environment='CLASSPATH=/opt/druid/lib/*:/opt/druid/conf/_common:/opt/druid/conf/_common/hdfs:/opt/druid/conf/overlord'
+Environment='JMX=-Dcom.sun.management.jmxremote.port=3003 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false'
+Environment='TMP=/opt/druid/tmp/overlord'
+
+ExecStartPre=/usr/bin/druid_remove_iotmpdirs overlord
+ExecStart=/usr/bin/java -server -Xmx512m -Xms128m -XX:NewSize=128m -XX:MaxNewSize=256m -Duser.timezone=UTC -Dfile.encoding=UTF-8 \
+			-Djava.io.tmpdir=${TMP} -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager \
+			-Dorg.jboss.logging.provider=slf4j -Dnet.spy.log.LoggerImpl=net.spy.memcached.compat.log.SLF4JLogger \
+			-Dlog4j.shutdownCallbackRegistry=io.druid.common.config.Log4jShutdown -Dlog4j.shutdownHookEnabled=true \
+			-Dlog4j.configurationFile=/opt/druid/conf/overlord/log4j2.xml \
+			-XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+PrintGCApplicationStoppedTime \
+			-XX:+PrintGCApplicationConcurrentTime -Xloggc:${TMP}/overlord.gc.log -XX:+UseGCLogFileRotation \
+			-XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=10m -XX:+ExitOnOutOfMemoryError -XX:+HeapDumpOnOutOfMemoryError \
+			-XX:HeapDumpPath=${TMP}/overlord.hprof -XX:+PerfDisableSharedMem -XX:+UseConcMarkSweepGC -XX:-UseBiasedLocking \
+			-classpath ${CLASSPATH} io.druid.cli.Main server overlord
+
+# SIGTERM signal is used to stop the Java process
+KillSignal=SIGTERM
+
+# Java process is never killed
+SendSIGKILL=yes
+OOMScoreAdjust=1000
+Restart=on-failure
+RestartSec=2000ms
+
+[Install]
+WantedBy=default.target

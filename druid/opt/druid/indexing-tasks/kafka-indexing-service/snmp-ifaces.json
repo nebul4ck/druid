@@ -1,0 +1,279 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "snmp-ifaces",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "timestamp",
+          "format": "auto"
+        },
+        "dimensionsSpec": {
+          "spatialDimensions": [],
+          "dimensions": ["company","site","probe","endpoint","probe_ip","ipv4","user","op_status","admin_status","alias","speed","port","mac","name"]
+        }
+      }
+    },
+    "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "system_up",
+              "name": "system_up_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "system_up",
+              "name": "system_up_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "system_up",
+              "name": "system_up_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_octets",
+              "name": "input_octets_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_octets",
+              "name": "input_octets_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_octets",
+              "name": "input_octets_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_octets",
+              "name": "output_octets_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_octets",
+              "name": "output_octets_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_octets",
+              "name": "output_octets_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_discards",
+              "name": "input_packets_discards_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_discards",
+              "name": "input_packets_discards_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_discards",
+              "name": "input_packets_discards_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_discards",
+              "name": "output_packets_discards_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_discards",
+              "name": "output_packets_discards_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_discards",
+              "name": "output_packets_discards_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_multicast",
+              "name": "input_packets_multicast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_multicast",
+              "name": "input_packets_multicast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_multicast",
+              "name": "input_packets_multicast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_multicast",
+              "name": "output_packets_multicast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_multicast",
+              "name": "output_packets_multicast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_multicast",
+              "name": "output_packets_multicast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_ucast",
+              "name": "input_packets_ucast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_ucast",
+              "name": "input_packets_ucast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_ucast",
+              "name": "input_packets_ucast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_ucast",
+              "name": "output_packets_ucast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_ucast",
+              "name": "output_packets_ucast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_ucast",
+              "name": "output_packets_ucast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_broadcast",
+              "name": "input_packets_broadcast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_broadcast",
+              "name": "input_packets_broadcast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_broadcast",
+              "name": "input_packets_broadcast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_broadcast",
+              "name": "output_packets_broadcast_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_broadcast",
+              "name": "output_packets_broadcast_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_broadcast",
+              "name": "output_packets_broadcast_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "input_packets_errors",
+              "name": "input_packets_errors_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "input_packets_errors",
+              "name": "input_packets_errors_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "input_packets_errors",
+              "name": "input_packets_errors_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "output_packets_errors",
+              "name": "output_packets_errors_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "output_packets_errors",
+              "name": "output_packets_errors_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "output_packets_errors",
+              "name": "output_packets_errors_max"
+            },
+            {
+              "type": "longSum",
+              "fieldName": "max_packet_size",
+              "name": "max_packet_size_sum"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "max_packet_size",
+              "name": "max_packet_size_min"
+            },
+            {
+              "type": "longMax",
+              "fieldName": "max_packet_size",
+              "name": "max_packet_size_max"
+            },
+            {
+              "type": "doubleSum",
+              "fieldName": "in_bandwidth",
+              "name": "in_bandwidth_sum"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "in_bandwidth",
+              "name": "in_bandwidth_min"
+            },
+            {
+              "type": "doubleMax",
+              "fieldName": "in_bandwidth",
+              "name": "in_bandwidth_max"
+            }
+    ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": "MINUTE"
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 5000000,
+    "maxRowsInMemory": 75000,
+    "intermediatePersistPeriod": "PT1M",
+    "resetOffsetAutomatically": true
+  },
+  "ioConfig": {
+    "topic": "snmp-ifaces",
+    "consumerProperties": {
+      "bootstrap.servers": "kafka01:9092",
+      "group.id": "druid-snmp",
+      "client.id": "druid",
+      "auto.offset.reset": "latest",
+      "enable.auto.commit": true,
+      "auto.commit.interval.ms": 2500
+    },
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT10M",
+    "useEarliestOffset": false,
+    "completionTimeout": "PT5M"
+  }
+}

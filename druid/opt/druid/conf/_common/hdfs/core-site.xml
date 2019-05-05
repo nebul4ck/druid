@@ -1,0 +1,22 @@
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+<!-- GLOBAL -->
+        <property>
+                <name>fs.defaultFS</name>
+                <value>hdfs://hdfsnamenode01:54310</value>
+        </property>
+ 
+        <property>
+                <name>io.file.buffer.size</name>
+                <value>131072</value>
+                <description>Size of read/write buffer used in SequenceFiles.</description>
+        </property>
+ 
+        <property>
+                <name>hadoop.tmp.dir</name>
+                <value>/opt/store/hadoop/tmp</value>
+        </property>
+
+</configuration>

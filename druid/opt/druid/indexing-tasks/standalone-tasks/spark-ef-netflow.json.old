@@ -1,0 +1,80 @@
+{
+  "dataSources": [
+    {
+      "spec": {
+        "dataSchema": {
+          "parser": {
+            "type": "string",
+            "parseSpec": {
+              "timestampSpec": {
+                "format": "auto",
+                "column": "timestamp"
+              },
+              "dimensionsSpec": {
+                "spatialDimensions": [],
+                "dimensionss": []
+              },
+              "format": "json"
+            }
+          },
+          "dataSource": "spark-ef-netflow",
+          "granularitySpec": {
+            "segmentGranularity": "hour",
+            "type": "uniform",
+            "queryGranularity": "none"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "events"
+            },
+            {
+              "type": "doubleMin",
+              "fieldName": "duration",
+              "name": "duration_min"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "size",
+              "name": "size_min"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "inbytes",
+              "name": "inbytes_min"
+            },
+            {
+              "type": "longMin",
+              "fieldName": "inpkts",
+              "name": "inpkts_min"
+            }
+          ]
+        },
+        "tuningConfig": {
+          "maxRowsInMemory": "100000",
+          "type": "realtime",
+          "windowPeriod": "PT10M",
+          "intermediatePersistPeriod": "PT10M"
+        }
+      },
+      "properties": {
+        "topicPattern.priority": "1",
+        "task.partitions": "1",
+        "task.replicants": "1",
+        "topicPattern": "spark-ef-netflow"
+      }
+    }
+  ],
+  "properties": {
+    "zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/druid",
+    "zookeeper.timeout": "PT20S",
+    "druid.selectors.indexing.serviceName": "overlord",
+    "druid.discovery.curator.path": "/discovery",
+    "kafka.zookeeper.connect": "smartsentinel-01:2181,smartsentinel-02:2181,smartsentinel-03:2181/kafka",
+    "kafka.group.id": "sparkNetflow",
+    "kafka.auto.commit.enable":"false",
+    "consumer.numThreads": "2",
+    "commit.periodMillis": "15000",
+    "reportDropsAsExceptions": "false"
+  }
+}
