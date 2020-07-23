@@ -1,9 +1,8 @@
-Package: druid-saturn
+Package: druid
 Essential: no
 Priority: optional
 Section: main
-Maintainer: Wellness Labs <agonzalez@wtelecom.es>
-#Depends: hdfscleaner-saturn
+Maintainer: nebul4ck <a.gonzalezmesas@gmail.com>
 Architecture: amd64
 Version: 0.11.0
 Homepage: druid.io/
